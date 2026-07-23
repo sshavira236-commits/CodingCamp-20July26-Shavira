@@ -1,0 +1,696 @@
+/* =========================================
+   CSS Custom Properties (Design Tokens)
+   ========================================= */
+:root {
+  --clr-bg:          #f0f2f5;
+  --clr-surface:     #ffffff;
+  --clr-primary:     #4f46e5;
+  --clr-primary-hov: #4338ca;
+  --clr-danger:      #ef4444;
+  --clr-danger-hov:  #dc2626;
+  --clr-text:        #1e293b;
+  --clr-muted:       #64748b;
+  --clr-border:      #e2e8f0;
+  --clr-success:     #22c55e;
+
+  /* Category colours (also used by Chart.js) */
+  --clr-food:        #f97316;
+  --clr-transport:   #3b82f6;
+  --clr-fun:         #a855f7;
+
+  --radius:    12px;
+  --radius-sm: 6px;
+  --shadow:    0 2px 12px rgba(0, 0, 0, 0.07);
+  --transition: 0.2s ease;
+}
+
+/* =========================================
+   Dark Mode Tokens  (applied via data-theme="dark" on <html>)
+   ========================================= */
+[data-theme="dark"] {
+  --clr-bg:          #0f172a;
+  --clr-surface:     #1e293b;
+  --clr-primary:     #6366f1;
+  --clr-primary-hov: #818cf8;
+  --clr-danger:      #f87171;
+  --clr-danger-hov:  #fca5a5;
+  --clr-text:        #f1f5f9;
+  --clr-muted:       #94a3b8;
+  --clr-border:      #334155;
+  --clr-success:     #4ade80;
+  --shadow:          0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* =========================================
+   Reset & Base
+   ========================================= */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background-color: var(--clr-bg);
+  color: var(--clr-text);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================================
+   Header
+   ========================================= */
+.app-header {
+  background: linear-gradient(135deg, var(--clr-primary) 0%, #7c3aed 100%);
+  color: #fff;
+  padding: 1.25rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 16px rgba(79, 70, 229, 0.3);
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.app-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* =========================================
+   Header Controls (toggle + balance)
+   ========================================= */
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+/* Theme Toggle Button */
+.btn-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition),
+              transform var(--transition);
+  white-space: nowrap;
+}
+
+.btn-theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-theme-toggle:active {
+  transform: scale(0.96);
+}
+
+.theme-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* Dark-mode overrides for the delete button hover (red bg too bright) */
+[data-theme="dark"] .btn-delete:hover {
+  background-color: rgba(248, 113, 113, 0.15);
+  color: var(--clr-danger);
+}
+
+/* Dark-mode: input / select backgrounds */
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .form-group select {
+  color-scheme: dark;
+}
+
+/* Smooth colour transitions on all key surfaces */
+body,
+.card,
+.app-header,
+.app-footer,
+.transaction-item,
+.form-group input,
+.form-group select {
+  transition: background-color 0.3s ease, color 0.3s ease,
+              border-color 0.3s ease;
+}
+
+.balance-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius);
+  padding: 0.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 140px;
+}
+
+.balance-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.85;
+}
+
+.balance-amount {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+/* =========================================
+   Main Layout
+   ========================================= */
+.app-main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  max-width: 1100px;
+  width: 100%;
+  margin: 1.75rem auto;
+  padding: 0 1.5rem;
+  align-items: start;
+}
+
+/* =========================================
+   Card Component
+   ========================================= */
+.card {
+  background: var(--clr-surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  border: 1px solid var(--clr-border);
+}
+
+.card + .card {
+  margin-top: 1.5rem;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--clr-text);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* =========================================
+   Form
+   ========================================= */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--clr-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.95rem;
+  color: var(--clr-text);
+  background: var(--clr-bg);
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--clr-primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+.form-group input.is-invalid,
+.form-group select.is-invalid {
+  border-color: var(--clr-danger);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
+}
+
+.field-error {
+  font-size: 0.78rem;
+  color: var(--clr-danger);
+  min-height: 1em;
+  display: block;
+}
+
+/* =========================================
+   Buttons
+   ========================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition), transform var(--transition);
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  width: 100%;
+  background-color: var(--clr-primary);
+  color: #fff;
+  margin-top: 0.25rem;
+}
+
+.btn-primary:hover {
+  background-color: var(--clr-primary-hov);
+}
+
+.btn-delete {
+  background: none;
+  color: var(--clr-muted);
+  padding: 0.3rem 0.5rem;
+  font-size: 1rem;
+  border-radius: var(--radius-sm);
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.btn-delete:hover {
+  background-color: #fee2e2;
+  color: var(--clr-danger);
+}
+
+/* =========================================
+   Transaction Count Badge
+   ========================================= */
+.transaction-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--clr-primary);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: 999px;
+  min-width: 1.4rem;
+  height: 1.4rem;
+  padding: 0 0.4rem;
+}
+
+/* =========================================
+   Spending Limit
+   ========================================= */
+.limit-card {
+  /* sits between header and form — keep vertical spacing consistent */
+}
+
+.limit-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.limit-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--clr-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.limit-input {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.95rem;
+  color: var(--clr-text);
+  background: var(--clr-bg);
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color var(--transition), box-shadow var(--transition),
+              background-color 0.3s ease, color 0.3s ease;
+}
+
+.limit-input:focus {
+  border-color: var(--clr-primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+[data-theme="dark"] .limit-input {
+  color-scheme: dark;
+}
+
+/* Warning Banner */
+.spending-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background: #fef2f2;
+  border: 1.5px solid #fca5a5;
+  border-radius: var(--radius-sm);
+  animation: warningSlideIn 0.25s ease;
+}
+
+[data-theme="dark"] .spending-warning {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: #f87171;
+}
+
+@keyframes warningSlideIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.spending-warning.hidden {
+  display: none;
+}
+
+.warning-icon {
+  font-size: 1.1rem;
+  line-height: 1.3;
+  flex-shrink: 0;
+}
+
+.warning-text {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #b91c1c;
+  line-height: 1.4;
+}
+
+[data-theme="dark"] .warning-text {
+  color: #fca5a5;
+}
+
+/* =========================================
+   Sort Bar
+   ========================================= */
+.sort-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.sort-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--clr-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.sort-select {
+  flex: 1;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+  color: var(--clr-text);
+  background: var(--clr-bg);
+  border: 1.5px solid var(--clr-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  transition: border-color var(--transition), box-shadow var(--transition),
+              background-color 0.3s ease, color 0.3s ease;
+}
+
+.sort-select:focus {
+  border-color: var(--clr-primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+}
+
+[data-theme="dark"] .sort-select {
+  color-scheme: dark;
+}
+
+/* =========================================
+   Transaction List
+   ========================================= */
+.transaction-list-wrapper {
+  position: relative;
+}
+
+.transaction-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 0.25rem;
+  /* custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--clr-border) transparent;
+}
+
+.transaction-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.transaction-list::-webkit-scrollbar-thumb {
+  background: var(--clr-border);
+  border-radius: 99px;
+}
+
+/* Transaction Item */
+.transaction-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  background: var(--clr-bg);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--clr-border);
+  transition: box-shadow var(--transition);
+  animation: slideIn 0.25s ease;
+}
+
+.transaction-item:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.transaction-category-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.dot-Food      { background-color: var(--clr-food); }
+.dot-Transport { background-color: var(--clr-transport); }
+.dot-Fun       { background-color: var(--clr-fun); }
+
+.transaction-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.transaction-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.transaction-category {
+  font-size: 0.74rem;
+  color: var(--clr-muted);
+}
+
+.transaction-amount {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--clr-danger);
+  white-space: nowrap;
+}
+
+/* Empty State */
+.empty-state,
+.chart-empty-state {
+  text-align: center;
+  color: var(--clr-muted);
+  font-size: 0.875rem;
+  padding: 1.5rem 0;
+}
+
+.empty-state.hidden,
+.chart-empty-state.hidden {
+  display: none;
+}
+
+/* =========================================
+   Pie Chart
+   ========================================= */
+.chart-card {
+  position: sticky;
+  top: 90px;
+}
+
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  margin: 0 auto 1.25rem;
+}
+
+.chart-wrapper.hidden {
+  display: none;
+}
+
+/* =========================================
+   Category Summary
+   ========================================= */
+.category-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.category-summary.hidden {
+  display: none;
+}
+
+.category-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.category-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.category-row-label {
+  flex: 1;
+  font-size: 0.85rem;
+  color: var(--clr-text);
+}
+
+.category-row-amount {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--clr-text);
+}
+
+.category-row-pct {
+  font-size: 0.75rem;
+  color: var(--clr-muted);
+  min-width: 3rem;
+  text-align: right;
+}
+
+/* =========================================
+   Footer
+   ========================================= */
+.app-footer {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--clr-muted);
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--clr-border);
+  background: var(--clr-surface);
+}
+
+/* =========================================
+   Responsive
+   ========================================= */
+@media (max-width: 760px) {
+  .app-main {
+    grid-template-columns: 1fr;
+    margin: 1.25rem auto;
+    padding: 0 1rem;
+  }
+
+  .chart-card {
+    position: static;
+  }
+
+  .app-title {
+    font-size: 1.15rem;
+  }
+
+  .balance-amount {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .header-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .balance-card {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
